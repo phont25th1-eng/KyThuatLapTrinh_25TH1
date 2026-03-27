@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 using namespace std;
 
 struct Person {
@@ -50,6 +51,61 @@ void RemovePerson(vector<Person>& p, int id) {
 	}
 	cout << "Not found peson with id: " << id << endl;
 }
+bool FindPerson(vector<Person> p, string fileName) {
+	for (Person i : p) {
+		if (i.name == name) {
+			return true;
+	}
+	}
+	return false;
+}
+void ExportToFile(vector<Person> p, string fileName) {
+	ofstream file(fileName, ios::binary);
+	if (!file) {
+		cout << "Can't open this file" << endl;
+		return;
+	}
+	for (Person i : p) {
+		file.write(reinterpret_cast<const char*>(&i.id), sizeof(i.id));
+
+		size_t namelength = i.name.size();
+		file.write(reinterpret_cast<const char*>(&namelength), sizeof(namelength));
+		file.write(i.name.c_str(), namelength);
+		file.write(reinterpret_cast<const char*>(&i.age), sizeof(i.age));
+		size_t addresslength = i.address = i.size();
+		file.write(reinterpret_cast<const char*>(&addresslength), sizeof(addresslength));
+		file.write(i.address.c_str(), addresslength;
+	}
+
+}
+void readFromFile(vector<Person>& p, string fileName) {
+	ifstream file(fileName, ios::binary);
+	if (!file) {
+		cout << "Can't open this file" << endl;
+		return;
+	}
+	/*while (p.size()>0)
+	 {
+	 p.pop_back();
+	 }*/
+	Person i;
+	while (file.peek() != EOF) {
+		file.read(reinterpret_cast<char*>(&i.id), sizeof(i.id));
+		size_t nameLength;
+		file.read(reinterpret_cast<char*>(&nameLength), sizeof(nameLength));
+		i.name.resize(nameLength);
+		file.read(&i.name[0], nameLength);
+		file.read(reinterpret_cast<char*>(&i.age), sizeof(i.age));
+		size_t addressLength;
+		file.read(reinterpret_cast<char*>(&addressLength), sizeof(addressLength));
+		i.address.resize(addressLength);
+		file.read(&i.address[0], addressLength);
+
+		RemovePerson(p, i.id);
+		p.push_back(i);
+
+	}
+}
 int main() {
 	vector <Person> list;
 	do {
@@ -84,12 +140,26 @@ int main() {
 			break;
 		}
 		case 4: {
+			string name;
+			cout << "input name to find: ";
+			cin.ignore();
+			getline(cin, name);
+			bool res = false;
+			if (res) {
+				cout << "found person with name" << name << endl;
+			}
+			else
+				cout << "person isn't existed" << endl;
 			break;
 		}
 		case 5: {
+			ExportToFile(list, "25TH1.dla");
+			cout << "Export successfully" << endl;
 			break;
 		}
 		case 6: {
+			readFromFile(list, "25TH1.dla");
+			cout << "Import successfully" << endl;
 			break;
 		}
 		case 0: {
