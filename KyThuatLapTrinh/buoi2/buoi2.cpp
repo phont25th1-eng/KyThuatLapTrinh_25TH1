@@ -42,9 +42,32 @@ struct LinkedList {
 		}
 	}
 	void Add(Person x) {
-		Node* n
+		Node* newNode = new Node(x);
+		newNode->next = head;
+		head = newNode;
+	}
+	bool Remove(int x) {
+		if (head == NULL) {
+			return false;
+		}
+		Node* item = head;
+		if (item->data.id == x) {
+			head = item->next;
+			delete item;
+			return true;
+		}
+		while (item->next != NULL) {
+			if (item->next->data.id == x) {
+				Node* temp = item->next;
+				item->next = temp->next;
+				delete temp;
+				return true;
+			}
+			item = item->next;
+		}
 	}
 };
+
 int main()
 {
 	LinkedList list = {NULL};
@@ -76,6 +99,11 @@ int main()
 			int id;
 			cout << "Input ID to remove: ";
 			cin >> id;
+			bool res = list.Remove(id);
+			if (res)
+				cout << "Remove a person successfully" << endl;
+			else
+				cout << "Person isn't found" << endl;
 			
 			break;
 		}
