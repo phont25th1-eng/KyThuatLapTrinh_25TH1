@@ -7,7 +7,7 @@ using namespace std;
 struct Author {
     int id;
     string name;
-    friend istream& operator << (istream& in, Author& a) {
+    friend istream& operator>> (istream& in, Author& a) {
         cout << "Author information:" << endl;
         cout << "\t+ Id: ";
         in >> a.id;
@@ -29,7 +29,7 @@ struct Book {
         os << "\t+ Author name: " << b.author.name << endl;
         return os;
     }
-    friend istream& operator << (istream& in, Book& b) {
+    friend istream& operator >> (istream& in, Book& b) {
         cout << "Book information:" << endl;
         cout << "\t+ Id:";
         in >> b.id;
@@ -55,22 +55,59 @@ struct Node {
 
 struct LinkedList {
     Node* head;
+    void Show() {
+        if (head == NULL) {
+            cout << "No book available" << endl;
+            return;
+        }
+        Node* item = head;
+        while (item != NULL) {
+            cout << item->data;
+            item = item->next;
+        }
+    }
+    void AddFirst(Node* p) {
+        p->next = head;
+        head = p;
+    }
+    bool Remove(int removeId) {
+        if (head == NULL) {
+            cout << "No book available" << endl;
+            return true;
+        }
+        Node* item = head;
+        if (item->data.id == removeId) { // Xoa dau danh sach
+            head = item->next;
+            delete item;
+            return true;
+        }
+        while (item->next != NULL) {
+            if (item->next->data.id == removeId) {
+                Node* temp = item->next;
+                item->next = item->next->next;
+                delete temp;
+                return true;
+            }
+            item = item->next;
+        }
+        return false;
+    }
+    bool Update(int updateId) {
+        if (head == NULL) {
+            cout << "No book available" << endl;
+            return false;
+        }
+        Node* item = head;
+        while (item != NULL) {
+            if (item->data.id == updateId) {
+                cin >> item->data;
+                return true;
+            }
+            item = item->next;
+        }
+        return false;
+    }
 };
-void Show(LinkedList books) {
-    if (books.head == NULL) {
-        cout << "No book available" << endl;
-        return;
-    }
-    Node* item = books.head;
-    while (item != NULL) {
-        cout << item->data;
-        item = item->next;
-    }
-}
-void AddFirst(Node* p) {
-    p->next = head;
-    head = p;
-}
 
 
 int main()
@@ -94,7 +131,7 @@ int main()
         switch (choice)
         {
         case 1: {
-            Show(books);
+            books.Show();
             break;
         }
         case 2: {
@@ -106,9 +143,26 @@ int main()
             break;
         }
         case 3: {
+            int removeId;
+            cout << "Enter book's id to remove: ";
+            cin >> removeId;
+            bool res = books.Remove(removeId);
+            if (res)
+                cout << "Remove book successfully" << endl;
+            else
+                cout << "Invalid book id" << endl;
             break;
         }
-        case 4: {
+        case 4: 
+        {
+            int updateId;
+            cout << "Enter book's id to update: ";
+            cin >> updateId;
+            bool res = books.Update(updateId);
+            if (res)
+                cout << "Update book successfully" << endl;
+            else
+                cout << "Invalid book id" << endl;
             break;
         }
         case 5: {
