@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 struct Author {
@@ -70,6 +71,7 @@ struct LinkedList {
         p->next = head;
         head = p;
     }
+
     bool Remove(int removeId) {
         if (head == NULL) {
             cout << "No book available" << endl;
@@ -106,6 +108,44 @@ struct LinkedList {
             item = item->next;
         }
         return false;
+    }
+    Book* Find(string bookname) {
+        if (head == NULL) {
+            cout << "No book available" << endl;
+            return NULL;
+        }
+        Node* item = head;
+        while (item != NULL) {
+            if (item->data.name.find(bookname) != std::string::npos) {
+                return &(item->data);
+            }
+            item = item->next;
+        }
+        return NULL;
+    }
+    void Export(string filename) {
+        ofstream out(filename, ios::binary);
+        if (!out.is_open()) {
+            cout << "Cannot open file" << endl;
+            return;
+        }
+        Node* item = head;
+        while (item != NULL) {
+            out.write(reinterpret_cast<const char*>(&item->data.id), sizeof(item->data.id));
+
+            size_t namelength = item->data.name.size();
+            out.write(reinterpret_cast<const char*>(&namelength), sizeof(namelength));
+            out.write(item->data.name.c_str(), namelength);
+
+            out.write(reinterpret_cast<const char*>(&item->data.author.id), sizeof(item->data.author.id));
+
+            size_t authornamelength = item->data.author.name.size();
+            out.write(reinterpret_cast<const char*>(&authornamelength), sizeof(authornamelength));
+            out.write(item->data.author.name.c_str(), authornamelength);
+
+            item = item->next;
+        }
+        out.close();
     }
 };
 
@@ -166,9 +206,22 @@ int main()
             break;
         }
         case 5: {
+            string bookName;
+            cout << "Enter book's name to find: ";
+            cin.ignore();
+            getline(cin, bookName);
+            Book* res = books.Find(bookName);
+            if (res != NULL) {
+                cout << *res;
+                }
+            else {
+                cout << "No book with name: " << bookName << endl;
+            }
             break;
         }
         case 6: {
+            books.Export("25TH1.dla");
+            cout << "Exported successfully" << endl;
             break;
         }
         case 7: {
