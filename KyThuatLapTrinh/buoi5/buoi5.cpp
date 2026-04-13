@@ -58,7 +58,7 @@ struct LinkedList {
     Node* head;
     void Show() {
         if (head == NULL) {
-            cout << "No book available" << endl;
+            cout << "No data available" << endl;
             return;
         }
         Node* item = head;
