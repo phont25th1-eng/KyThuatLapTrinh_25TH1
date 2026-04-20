@@ -29,34 +29,32 @@ int main()
             break;
         }
         case 2: {
-           /* Book b;
-            cin >> b;
-            Node* newNode = new Node;
-            newNode->Create(b);
-            books.AddFirst(newNode);*/
+            Account a;
+            cin >> a;
+            account.Add(a);
             break;
         }
         case 3: {
-           /* int removeId;
-            cout << "Enter book's id to remove: ";
+            int removeId;
+            cout << "Enter account Id to remove: ";
             cin >> removeId;
-            bool res = books.Remove(removeId);
+            bool res = account.Remove(removeId);
             if (res)
-                cout << "Remove book successfully" << endl;
+                cout << "Remove account with id:" << removeId << endl;
             else
-                cout << "Invalid book id" << endl;*/
+                cout << "Not found account id: " << removeId << endl;
             break;
         }
         case 4:
         {
-            /*int updateId;
-            cout << "Enter book's id to update: ";
+            int updateId;
+            cout << "Enter account Id to update: ";
             cin >> updateId;
-            bool res = books.Update(updateId);
+            bool res = account.Update(updateId);
             if (res)
-                cout << "Update book successfully" << endl;
+                cout << "Update account with id: " << updateId << endl;
             else
-                cout << "Invalid book id" << endl;*/
+                cout << "Not found account id: " << updateId << endl;
             break;
         }
         case 5: {
