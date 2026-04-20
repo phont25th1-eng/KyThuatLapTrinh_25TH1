@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Account.h"
 #include "Linkedlist.h"
+#include <string>
 
 int main()
 {
@@ -25,7 +26,7 @@ int main()
         switch (choice)
         {
         case 1: {
-            Account.Show();
+            account.Show();
             break;
         }
         case 2: {
@@ -58,17 +59,11 @@ int main()
             break;
         }
         case 5: {
-            /*string bookName;
-            cout << "Enter book's name to find: ";
+            string userName;
+            cout << "Enter account name : ";
             cin.ignore();
-            getline(cin, bookName);
-            Book* res = books.Find(bookName);
-            if (res != NULL) {
-                cout << *res;
-            }
-            else {
-                cout << "No book with name: " << bookName << endl;
-            }*/
+            getline(cin, userName);
+            account.Find(userName);
             break;
         }
         case 6: {
